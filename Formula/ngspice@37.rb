@@ -12,32 +12,61 @@ class NgspiceAT37 < Formula
   head do
     url "https://git.code.sf.net/p/ngspice/ngspice.git", branch: "master"
 
-    depends_on "autoconf" => :build
-    depends_on "automake" => :build
+    
+  
     depends_on "bison" => :build
-    depends_on "libtool" => :build
   end
 
+  depends_on "autoconf"
+  depends_on "automake"
+  depends_on "llvm"
+  depends_on "libtool"
+  depends_on "libomp"
   depends_on "fftw"
   depends_on "readline"
   depends_on "libx11" => :build
   depends_on "libxaw" => :build
   depends_on "libxft" => :build
   depends_on "freetype" => :build
+  
+  #ENV.prepend_path "PATH", which("admsXml").dirname
+  #ENV.prepend_path "PATH", File.realpath("admsXml")
+  
 
   def install
-    system "./autogen.sh" if build.head?
+    system "/opt/homebrew/bin/wget https://sourceforge.net/projects/ngspice/files/ng-spice-rework/37/ngspice-adms-va.7z/download"
+   
+    system "/opt/homebrew/bin/7za x download -o./src/spicelib/devices/adms"
+    
+    ENV["PATH"] = ENV["PATH"].split(":").push("/Users/iomotade/eee/ocd/tools/cad/adms/bin").join(":")
+    ENV["CC"] = "/opt/homebrew/opt/llvm/bin/clang"
+    ENV["CXX"] = "/opt/homebrew/opt/llvm/bin/clang++"
+    ENV["CFLAGS"] = "-I/opt/homebrew/opt/readline/include -I/opt/homebrew/include/freetype2 -I/opt/homebrew/include -I/opt/homebrew/opt/llvm/include"
+    ENV["CXXFLAGS"] = ENV["CFLAGS"]
+    ENV["LDFLAGS"] = "-L/opt/homebrew/opt/readline/lib -L/opt/homebrew/opt/freetype2/lib -L/opt/homebrew/opt/libomp/lib -L/opt/homebrew/opt/llvm/lib"
 
+    system "./autogen.sh --adms" #if build.head?
+    
+    #system "export PATH='$PATH:${HOME}/eee/ocd/tools/cad/adms/bin'"
+    
+    
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
-      --with-readline=yes
+      --enable-adms
+      --enable-cider
       --enable-xspice
+      --enable-openmp
+      --enable-pss
+      --with-readline=yes
       --x-includes=/opt/homebrew/include/X11
       --x-libraries=/opt/homebrew/lib/X11
-      CFLAGS=-I/opt/homebrew/include/freetype2
-      LDFLAGS=-L/opt/homebrew/opt/freetype2/lib
+      YACC=/opt/homebrew/opt/bison@3.8/bin/bison
+      BISON=/opt/homebrew/opt/bison@3.8/bin/bison
     ]
+    
+    #CFLAGS=-I/opt/homebrew/include/freetype2 -I/opt/homebrew/include
+    #LDFLAGS=-L/opt/homebrew/opt/freetype2/lib -L/opt/homebrew/opt/libomp/lib
 
     system "./configure", *args
     system "make", "install"
