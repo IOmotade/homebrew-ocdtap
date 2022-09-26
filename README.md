@@ -1,10 +1,10 @@
-# Iomotade Maintap
+# iomotade ocdtap
 
 ## How do I install these formulae?
 
-`brew install iomotade/maintap/<formula>`
+`brew install iomotade/ocdtap/<formula>`
 
-Or `brew tap iomotade/maintap` and then `brew install <formula>`.
+Or `brew tap iomotade/ocdtap` and then `brew install <formula>`.
 
 ## Documentation
 
