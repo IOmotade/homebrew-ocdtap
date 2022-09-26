@@ -22,17 +22,9 @@ class NetgenAT15 < Formula
     ]
     
     system "./configure", *args
+    system "make"
     system "make", "install"
     
-    system "/opt/homebrew/bin/wget", "https://github.com/IOmotade/homebrew-ocdtap/raw/master/Fixes/tclnetgen.dylib"
-
-    args = %W[
-      #{prefix}/lib/netgen/tcl/
-    ]
-
-    system "chmod +x tclnetgen.dylib"
-    FileUtils.move "tclnetgen.dylib", *args
-
   end
 
 end
