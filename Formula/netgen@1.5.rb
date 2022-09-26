@@ -13,12 +13,14 @@ class NetgenAT15 < Formula
     url "git://opencircuitdesign.com/netgen", branch: "netgen-1.5"
   end
 
+  depends_on "iomotade/maintap/tcltk@8.6.10" => :build
+  
   def install
         
     args = %W[
       --prefix=#{prefix}
-      --with-tcl=/opt/homebrew/Cellar/tcltk@8.6/8.6.10/lib
-      --with-tk=/opt/homebrew/Cellar/tcltk@8.6/8.6.10/lib
+      --with-tcl=/opt/homebrew/Cellar/tcltk@8.6.10/8.6.10/lib
+      --with-tk=/opt/homebrew/Cellar/tcltk@8.6.10/8.6.10/lib
     ]
     
     system "./configure", *args
