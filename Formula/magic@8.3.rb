@@ -13,7 +13,7 @@ class MagicAT83 < Formula
     url "git://opencircuitdesign.com/magic", branch: "magic-8.3"
   end
   
-  depends_on "iomotade/maintap/tcltk@8.6.10" => :build
+  depends_on "iomotade/ocdtap/tcltk@8.6.10" => :build
 
   def install
         

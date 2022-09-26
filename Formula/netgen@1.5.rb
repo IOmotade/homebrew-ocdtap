@@ -13,7 +13,7 @@ class NetgenAT15 < Formula
     url "git://opencircuitdesign.com/netgen", branch: "netgen-1.5"
   end
 
-  depends_on "iomotade/maintap/tcltk@8.6.10" => :build
+  depends_on "iomotade/ocdtap/tcltk@8.6.10" => :build
   
   def install
         

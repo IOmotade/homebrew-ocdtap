@@ -17,7 +17,7 @@ class NgspiceAT37 < Formula
 
   depends_on "autoconf"
   depends_on "automake"
-  depends_on "iomotade/maintap/adms@2.3.6"
+  depends_on "iomotade/ocdtap/adms@2.3.6"
   depends_on "llvm"
   depends_on "libtool"
   depends_on "libomp"
