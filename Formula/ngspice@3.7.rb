@@ -1,5 +1,5 @@
 class NgspiceAT37 < Formula
-  desc "Spice circuit simulator"
+  desc "NGSpice v3.7: Spice Circuit Simulator"
   homepage "https://ngspice.sourceforge.io/"
   url "https://downloads.sourceforge.net/project/ngspice/ng-spice-rework/37/ngspice-37.tar.gz"
   sha256 "9beea6741a36a36a70f3152a36c82b728ee124c59a495312796376b30c8becbe"
@@ -12,14 +12,12 @@ class NgspiceAT37 < Formula
   head do
     url "https://git.code.sf.net/p/ngspice/ngspice.git", branch: "master"
 
-    
-  
     depends_on "bison" => :build
   end
 
   depends_on "autoconf"
   depends_on "automake"
-  depends_on "iomotade/maintap/adms@236"
+  depends_on "iomotade/maintap/adms@2.3.6"
   depends_on "llvm"
   depends_on "libtool"
   depends_on "libomp"
@@ -29,10 +27,6 @@ class NgspiceAT37 < Formula
   depends_on "libxaw" => :build
   depends_on "libxft" => :build
   depends_on "freetype" => :build
-  
-  #ENV.prepend_path "PATH", which("admsXml").dirname
-  #ENV.prepend_path "PATH", File.realpath("admsXml")
-  
 
   def install
     system "/opt/homebrew/bin/wget https://sourceforge.net/projects/ngspice/files/ng-spice-rework/37/ngspice-adms-va.7z/download"
@@ -46,10 +40,7 @@ class NgspiceAT37 < Formula
     ENV["LDFLAGS"] = "-L/opt/homebrew/opt/readline/lib -L/opt/homebrew/opt/freetype2/lib -L/opt/homebrew/opt/libomp/lib -L/opt/homebrew/opt/llvm/lib"
 
     system "./autogen.sh --adms" #if build.head?
-    
-    #system "export PATH='$PATH:${HOME}/eee/ocd/tools/cad/adms/bin'"
-    
-    
+ 
     args = %W[
       --disable-dependency-tracking
       --prefix=#{prefix}
@@ -65,9 +56,6 @@ class NgspiceAT37 < Formula
       BISON=/opt/homebrew/opt/bison@3.8/bin/bison
     ]
     
-    #CFLAGS=-I/opt/homebrew/include/freetype2 -I/opt/homebrew/include
-    #LDFLAGS=-L/opt/homebrew/opt/freetype2/lib -L/opt/homebrew/opt/libomp/lib
-
     system "./configure", *args
     system "make", "install"
 
