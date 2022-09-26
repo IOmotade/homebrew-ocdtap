@@ -15,7 +15,7 @@ class XschemAT310 < Formula
 
   depends_on "libx11" => :build
   depends_on "libxpm" => :build
-  depends_on "iomotade/maintap/tcltk@8.6" => :build
+  depends_on "iomotade/maintap/tcltk@8.6.10" => :build
 
   def install
     
