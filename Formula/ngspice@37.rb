@@ -19,6 +19,7 @@ class NgspiceAT37 < Formula
 
   depends_on "autoconf"
   depends_on "automake"
+  depends_on "iomotade/maintap/adms@236"
   depends_on "llvm"
   depends_on "libtool"
   depends_on "libomp"
@@ -38,7 +39,6 @@ class NgspiceAT37 < Formula
    
     system "/opt/homebrew/bin/7za x download -o./src/spicelib/devices/adms"
     
-    ENV["PATH"] = ENV["PATH"].split(":").push("/Users/iomotade/eee/ocd/tools/cad/adms/bin").join(":")
     ENV["CC"] = "/opt/homebrew/opt/llvm/bin/clang"
     ENV["CXX"] = "/opt/homebrew/opt/llvm/bin/clang++"
     ENV["CFLAGS"] = "-I/opt/homebrew/opt/readline/include -I/opt/homebrew/include/freetype2 -I/opt/homebrew/include -I/opt/homebrew/opt/llvm/include"
