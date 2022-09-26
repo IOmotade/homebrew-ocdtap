@@ -12,13 +12,15 @@ class MagicAT83 < Formula
   head do
     url "git://opencircuitdesign.com/magic", branch: "magic-8.3"
   end
+  
+  depends_on "iomotade/maintap/tcltk@8.6.10" => :build
 
   def install
         
     args = %W[
       --prefix=#{prefix}
-      --with-tcl=/opt/homebrew/Cellar/tcltk@8.6/8.6.10/lib
-      --with-tk=/opt/homebrew/Cellar/tcltk@8.6/8.6.10/lib
+      --with-tcl=/opt/homebrew/Cellar/tcltk@8.6.10/8.6.10/lib
+      --with-tk=/opt/homebrew/Cellar/tcltk@8.6.10/8.6.10/lib
       --x-includes=/opt/homebrew/include/X11
       --x-libraries=/opt/homebrew/lib/X11
     ]
