@@ -1,5 +1,5 @@
 class AdmsAT236 < Formula
-  desc "ADMS Code Generator for Verilog-AMS with Spice API"
+  desc "ADMS v2.3.6 Code Generator for Verilog-AMS with Spice API"
   homepage "https://sourceforge.net/projects/mot-adms/"
   url "https://sourceforge.net/projects/mot-adms/files/adms-source/2.3/adms-2.3.6.tar.gz/download"
   sha256 "7307e8c63967696209c514545001fa496538112af7b812958950b22e0d45c9e6"
@@ -10,7 +10,7 @@ class AdmsAT236 < Formula
   end
 
   head do
-    url "https://github.com/Qucs/ADMS.git", branch: "master"
+    url "https://github.com/Qucs/ADMS.git", tag: "release-2.3.6"
   
     depends_on "bison" => :build
   end
