@@ -14,7 +14,7 @@ class XcircuitAT31030 < Formula
   end
   
   depends_on "iomotade/ocdtap/tcltk@8.6.10" => :build
-  depends_on "libcairo" => :build
+  depends_on "cairo" => :build
   depends_on "libx11" => :build
   depends_on "libxpm" => :build
 
@@ -37,6 +37,6 @@ class XcircuitAT31030 < Formula
     system "./configure", *args
     system "make"
     system "make", "install"
-    
+
   end
 end
