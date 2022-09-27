@@ -22,9 +22,8 @@ class XcircuitAT31030 < Formula
     
     args = %W[
       --prefix=#{prefix}
-      --with-cairo
-      --with-tcl
-      --with-python
+      # --with-cairo
+      # --with-python
       --enable-args
       --x-includes=/opt/homebrew/include/X11
       --x-libraries=/opt/homebrew/lib/X11
