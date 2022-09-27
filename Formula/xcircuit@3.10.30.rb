@@ -15,15 +15,20 @@ class XcircuitAT31030 < Formula
   
   depends_on "iomotade/ocdtap/tcltk@8.6.10" => :build
   depends_on "cairo" => :build
+  depends_on "pkgconfig" => :build
   depends_on "libx11" => :build
+  depends_on "libxcb" => :build
+  depends_on "libxft" => :build
   depends_on "libxpm" => :build
+  depends_on "freetype" => :build
 
   def install
     
+    ENV['PKG_CONFIG_PATH'] = '/opt/homebrew/lib/pkgconfig:/opt/homebrew/share/pkgconfig'
+
     args = %W[
       --prefix=#{prefix}
-      # --with-cairo
-      # --with-python
+      --with-cairo
       --enable-args
       --x-includes=/opt/homebrew/include/X11
       --x-libraries=/opt/homebrew/lib/X11
