@@ -14,11 +14,14 @@ class MagicAT83 < Formula
   end
   
   depends_on "iomotade/ocdtap/tcltk@8.6.10" => :build
+  depends_on "glfw" => :build
+  depends_on "glew" => :build
 
   def install
         
     args = %W[
       --prefix=#{prefix}
+      --with-opengl
       --with-tcl=/opt/homebrew/Cellar/tcltk@8.6.10/8.6.10/lib
       --with-tk=/opt/homebrew/Cellar/tcltk@8.6.10/8.6.10/lib
       --x-includes=/opt/homebrew/include/X11
