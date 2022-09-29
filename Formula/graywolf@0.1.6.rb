@@ -37,9 +37,9 @@ class GraywolfAT016 < Formula
 
     system "mkdir build"
     Dir.chdir("build"){
-    system "cmake .. -DCMAKE_INSTALL_PREFIX=#{prefix}"
-    system "make"
-    system "make", "install"
+      system "cmake .. -DCMAKE_INSTALL_PREFIX=#{prefix}"
+      system "make"
+      system "make", "install"
   }
 
   end
