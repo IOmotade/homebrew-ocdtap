@@ -10,7 +10,7 @@ with open(filepath, 'r') as file:
   
 # Edit contents
 lineIdx = 145-1
-contents[lineIdx] = f"\t$(RM) $(CONDA_DIR)/.condarc\n{contents[lineIdx]}\n"
+contents[lineIdx] = f"\t$(RM) $(CONDA_DIR)/.condarc\n{contents[lineIdx]}"
 
 # Write file
 with open(filepath, 'w') as file:
