@@ -4,6 +4,13 @@ PREFIX = sys.argv[1]
 VERSION_NO = sys.argv[2]
 
 TMP_DIR = f"{PREFIX}/tmp"
+BUILD_DIR = f"{TMP_DIR}"
+SHARE_DIR = f"{PREFIX}/share"
+PDK_DIR = f"{PREFIX}/share/pdk"
+OPEN_PDKS_DIR = f"{TMP_DIR}/open_pdks"
+SOURCES_PDK_DIR = f"{OPEN_PDKS_DIR}/sources"
+SKYWATER_PDK_DIR = f"{SOURCES_PDK_DIR}/skywater-pdk"
+
 INSTALLER_FILE = f"{PREFIX}/bin/run_open-pdks_installer.sh"
 UNINSTALLER_FILE = f"{PREFIX}/bin/uninstall_open-pdks.sh"
 
@@ -22,6 +29,8 @@ DESCRIPTION = f"This application installs Open-PDKs version {VERSION_NO}"
 
 
 ARGS = sys.argv[3:]
+
+print(f"Temporary directory is: {TMP_DIR}")
 
 if (('-h' in ARGS) or ('--help' in ARGS)):
   print(
@@ -180,59 +189,63 @@ Report bugs to <github.com/RTimothyEdwards/open_pdks>.
 )
 else:
   with open(INSTALLER_FILE, 'w') as ifile:
+    ifile.write("#!/usr/bin/env bash\n")
     ifile.write("CURRENT_DIR=${PWD}\n")
     ifile.write(f"\n")
     
+    # Make final directories
+    # ifile.write(f"mkdir {TMP_DIR}\n")
+
     # Create and clone Open_PDK repo
-    ifile.write(f"#Clone Open PDK v{VERSION_NO} repository")
+    ifile.write(f"#Clone Open PDK v{VERSION_NO} repository\n")
+    ifile.write(f"mkdir {TMP_DIR}\n")
     ifile.write(f"cd {TMP_DIR}\n")
     ifile.write("git clone --depth 1 --branch 1.0.340 git://opencircuitdesign.com/open_pdks\n")
     ifile.write(f"\n")
     
     # Clone Skywater DPK repo & make timing
-    ifile.write("#Clone Skywater PDK repository")
-    ifile.write('mkdir sources\n')
-    ifile.write('cd sources\n')
+    ifile.write(f"cd {OPEN_PDKS_DIR}\n")
+    ifile.write("#Clone Skywater PDK repository\n")
+    ifile.write(f"mkdir {SOURCES_PDK_DIR}\n")
+    ifile.write(f"cd {SOURCES_PDK_DIR}\n")
     
     ifile.write("git clone https://github.com/google/skywater-pdk\n")
+    ifile.write(f"cd {SKYWATER_PDK_DIR}\n")
     
     # Get '$(CONDA_SETUP_HACK): $(RM) $(CONDA_DIR)/.condarc' 
     # into sources/skywater-pdk/third_party/make-env/conda.mk at line 120 
     # and '$(CONDA_ENV_PYTHON): $(ENVIRONMENT_FILE) $(REQUIREMENTS_FILE) | $(CONDA_PYTHON) $(CONDA_SETUP_PATCH) $(CONDA_PKGS_DEP) \
     # $(CONDA_ENVS_DIR) $(CONDA_PYVENV)' into sources/skywater-pdk/third_party/make-env/conda.mk at line 144
     ifile.write(f"sed -i '' -e '30s,.*,\twget https://github.com/IOmotade/homebrew-ocdtap/raw/master/Patches/open-pdks%401.0.340/condarc-yaml-error-patch.py,g' Makefile\n")
-    ifile.write(f"sed -i '' -e '31s,.*,\tpython condarc-yaml-error-patch.py #{TMP_DIR},g' Makefile\n")
-    # system "sed -i '' -e '30s,.*,\techo Debug,g' Makefile"
-    # system "sed -i '' -e '31s,.*,\tpython /opt/homebrew/Library/Taps/iomotade/homebrew-ocdtap/Patches/open-pdks@1.0.340/condarc-yaml-error-patch.py #{buildpath},g' Makefile"
+    ifile.write(f"sed -i '' -e '31s,.*,\tpython3 condarc-yaml-error-patch.py {BUILD_DIR},g' Makefile\n")
     ifile.write(f"sed -i '' -e '32s,.*,-include $(TOP_DIR)/third_party/make-env/conda.mk,g' Makefile\n")
     
     ifile.write("git config http.postbuffer 524288000\n")
-    ifile.write("git submodule update --init libraries/sky130_fd_io/latest\n")
-    ifile.write("git submodule update --init libraries/sky130_fd_pr/latest\n")
-    ifile.write("git submodule update --init libraries/sky130_fd_sc_hd/latest\n")
-    ifile.write("git submodule update --init libraries/sky130_fd_sc_hvl/latest\n")
+    # ifile.write("git submodule update --init libraries/sky130_fd_io/latest\n")
+    # ifile.write("git submodule update --init libraries/sky130_fd_pr/latest\n")
+    # ifile.write("git submodule update --init libraries/sky130_fd_sc_hd/latest\n")
+    # ifile.write("git submodule update --init libraries/sky130_fd_sc_hvl/latest\n")
     
-    ifile.write("git submodule update --init libraries/sky130_fd_pr_reram/latest\n")
-    ifile.write("git submodule update --init libraries/sky130_fd_sc_hdll/latest\n")
-    ifile.write("git submodule update --init libraries/sky130_fd_sc_hs/latest\n")
-    ifile.write("git submodule update --init libraries/sky130_fd_sc_ms/latest\n")
-    ifile.write("git submodule update --init libraries/sky130_fd_sc_ls/latest\n")
-    ifile.write("git submodule update --init libraries/sky130_fd_sc_lp/latest\n")
-    
-    # file.write("SUBMODULE_VERSION=latest make submodules -j3 || make submodules -j1\n")
+    # ifile.write("git submodule update --init libraries/sky130_fd_pr_reram/latest\n")
+    # ifile.write("git submodule update --init libraries/sky130_fd_sc_hdll/latest\n")
+    # ifile.write("git submodule update --init libraries/sky130_fd_sc_hs/latest\n")
+    # ifile.write("git submodule update --init libraries/sky130_fd_sc_ms/latest\n")
+    # ifile.write("git submodule update --init libraries/sky130_fd_sc_ls/latest\n")
+    # ifile.write("git submodule update --init libraries/sky130_fd_sc_lp/latest\n")
+    ifile.write("SUBMODULE_VERSION=latest make submodules -j3 || make submodules -j1\n")
     ifile.write("make timing\n")
     ifile.write(f"\n")
     
     # Make Open PDK
-    ifile.write(f"cd ..\n")
+    ifile.write(f"cd {OPEN_PDKS_DIR}\n")
     
     args = ''.join([f'{arg} ' for arg in ARGS])
-    ifile.write("./configure --prefix={PREFIX} --enable-sky130-pdk=#{TMP_DIR}/sources/skywater-pdk {args}\n")
-    ifile.write("sed -i '' -e 's,prefix = .*,prefix = {TMP_DIR},g' Makefile\n")
+    ifile.write(f"./configure --prefix={PREFIX} --enable-sky130-pdk={SKYWATER_PDK_DIR} {args}\n")
+    ifile.write(f"sed -i '' -e 's,prefix = .*,prefix = {TMP_DIR},g' Makefile\n")
     ifile.write("sed -i '' -e '77s,SED = .*,SED = /opt/homebrew/bin/gsed,g' gf180mcu/Makefile\n")
     ifile.write("sed -i '' -e '150s,SED = .*,SED = /opt/homebrew/bin/gsed,g' sky130/Makefile\n")
     
-    ifile.write("colormake\n")
+    ifile.write("make\n")
     ifile.write("make install\n")
     ifile.write(f"\n")
     
