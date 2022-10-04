@@ -1,13 +1,9 @@
 require 'fileutils'
 class OpenPdksAT10340x < Formula
   desc "Open PDKs v1.0.340"
-  homepage "http://opencircuitdesign.com/qrouter/"
-  # url "https://github.com/IOmotade/homebrew-ocdtap/raw/master/Patches/open-pdks%401.0.340/make-error-patch.tar.gz"
-  # url "https://github.com/IOmotade/homebrew-ocdtap/blob/master/Patches/open-pdks@1.0.340/make-error-patch.tar.gz?raw=true"
-  # url "https://github.com/IOmotade/homebrew-ocdtap/raw/master/Patches/open-pdks%401.0.340/make-error-patch.tar.gz"
+  homepage "http://opencircuitdesign.com/open_pdks/"
   url "https://github.com/IOmotade/homebrew-ocdtap/raw/master/Patches/open-pdks%401.0.340/make-error-patch.tar.gz"
-  # sha256 "816bb6ee32c672f5ebadb68b87a754a7d4e3f4cd438cbaa94a10c84837ef2ee2"
-  sha256 "918ad87c52cba2842d714734b3980dfe02acc1825ddca153bd2328a29ef9c236"
+  sha256 "1fad29c1c7bd4c0120d5a7c4fc0d7d23e5595d08aeecb9e984cd7b62dec7d71d"
 
   livecheck do
     url :stable
@@ -25,7 +21,6 @@ class OpenPdksAT10340x < Formula
   depends_on "python" => :build
   
   def install
-    # system "mkdir bin"
     Dir.chdir("bin"){
       system 'touch install_open-pdks.sh'
       system 'echo "#!/usr/bin/env bash" >> install_open-pdks.sh'
