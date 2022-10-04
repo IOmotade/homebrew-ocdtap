@@ -35,7 +35,7 @@ class OpenPdksAT10340x < Formula
       bin.install "install_open-pdks.sh" => "install_open-pdks"
       bin.install "open-pdks_installer.py" => "open-pdks_installer.py"
 
-      ohai "Run the following commands to install the pdk: 'install_open-pdks'"
+      ohai "Run the following command to install the pdk: 'sudo install_open-pdks'"
     }
   end
 end

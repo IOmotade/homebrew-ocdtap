@@ -187,9 +187,11 @@ it to find libraries and programs with nonstandard names/locations.
 Report bugs to <github.com/RTimothyEdwards/open_pdks>.
 """
 )
-else:
   with open(INSTALLER_FILE, 'w') as ifile:
     ifile.write("#!/usr/bin/env bash\n")
+    ifile.write("")
+else:
+  with open(INSTALLER_FILE, 'w') as ifile:
     ifile.write("CURRENT_DIR=${PWD}\n")
     ifile.write(f"\n")
     
