@@ -3,7 +3,7 @@ class OpenPdksAT10340x < Formula
   desc "Open PDKs v1.0.340"
   homepage "http://opencircuitdesign.com/open_pdks/"
   url "https://github.com/IOmotade/homebrew-ocdtap/raw/master/Patches/open-pdks%401.0.340/make-error-patch.tar.gz"
-  sha256 "1fad29c1c7bd4c0120d5a7c4fc0d7d23e5595d08aeecb9e984cd7b62dec7d71d"
+  sha256 "7b6ecf95b6a6bc9a102ce88ca2b0f8f791d10aa77419a387024ae7981b76c252"
 
   livecheck do
     url :stable
@@ -21,19 +21,17 @@ class OpenPdksAT10340x < Formula
   depends_on "python" => :build
   
   def install
-    Dir.chdir("make-error-patch"){
-      Dir.chdir("bin"){
-        system 'touch install_open-pdks.sh'
-        system 'echo "#!/usr/bin/env bash" >> install_open-pdks.sh'
-        system "echo 'python3 #{prefix}/bin/open-pdks_installer.py #{prefix} 1.0.340 \"$@\"' >> install_open-pdks.sh"
-        system "echo 'chmod +x #{prefix}/bin/run_open-pdks_installer.sh' >> install_open-pdks.sh"
-        system "echo '#{prefix}/bin/run_open-pdks_installer.sh' >> install_open-pdks.sh"
+    Dir.chdir("bin"){
+      system 'touch install_open-pdks.sh'
+      system 'echo "#!/usr/bin/env bash" >> install_open-pdks.sh'
+      system "echo 'python3 #{prefix}/bin/open-pdks_installer.py #{prefix} 1.0.340 \"$@\"' >> install_open-pdks.sh"
+      system "echo 'chmod +x #{prefix}/bin/run_open-pdks_installer.sh' >> install_open-pdks.sh"
+      system "echo '#{prefix}/bin/run_open-pdks_installer.sh' >> install_open-pdks.sh"
 
-        bin.install "install_open-pdks.sh" => "install_open-pdks"
-        bin.install "open-pdks_installer.py" => "open-pdks_installer.py"
+      bin.install "install_open-pdks.sh" => "install_open-pdks"
+      bin.install "open-pdks_installer.py" => "open-pdks_installer.py"
 
-        ohai "Run the following command to install the pdk: 'sudo install_open-pdks'"
-      }
+      ohai "Run the following command to install the pdk: 'sudo install_open-pdks'"
     }
   end
 end
