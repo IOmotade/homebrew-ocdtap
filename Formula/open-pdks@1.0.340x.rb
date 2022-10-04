@@ -21,17 +21,19 @@ class OpenPdksAT10340x < Formula
   depends_on "python" => :build
   
   def install
-    Dir.chdir("bin"){
-      system 'touch install_open-pdks.sh'
-      system 'echo "#!/usr/bin/env bash" >> install_open-pdks.sh'
-      system "echo 'python3 #{prefix}/bin/open-pdks_installer.py #{prefix} 1.0.340 \"$@\"' >> install_open-pdks.sh"
-      system "echo 'chmod +x #{prefix}/bin/run_open-pdks_installer.sh' >> install_open-pdks.sh"
-      system "echo '#{prefix}/bin/run_open-pdks_installer.sh' >> install_open-pdks.sh"
+    Dir.chdir("make-error-patch"){
+      Dir.chdir("bin"){
+        system 'touch install_open-pdks.sh'
+        system 'echo "#!/usr/bin/env bash" >> install_open-pdks.sh'
+        system "echo 'python3 #{prefix}/bin/open-pdks_installer.py #{prefix} 1.0.340 \"$@\"' >> install_open-pdks.sh"
+        system "echo 'chmod +x #{prefix}/bin/run_open-pdks_installer.sh' >> install_open-pdks.sh"
+        system "echo '#{prefix}/bin/run_open-pdks_installer.sh' >> install_open-pdks.sh"
 
-      bin.install "install_open-pdks.sh" => "install_open-pdks"
-      bin.install "open-pdks_installer.py" => "open-pdks_installer.py"
+        bin.install "install_open-pdks.sh" => "install_open-pdks"
+        bin.install "open-pdks_installer.py" => "open-pdks_installer.py"
 
-      ohai "Run the following command to install the pdk: 'sudo install_open-pdks'"
+        ohai "Run the following command to install the pdk: 'sudo install_open-pdks'"
+      }
     }
   end
 end
