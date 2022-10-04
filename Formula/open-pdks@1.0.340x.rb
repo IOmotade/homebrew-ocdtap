@@ -27,11 +27,17 @@ class OpenPdksAT10340x < Formula
       system "echo 'python3 #{prefix}/bin/open-pdks_installer.py #{prefix} 1.0.340 \"$@\"' >> install_open-pdks.sh"
       system "echo 'chmod +x #{prefix}/bin/run_open-pdks_installer.sh' >> install_open-pdks.sh"
       system "echo '#{prefix}/bin/run_open-pdks_installer.sh' >> install_open-pdks.sh"
+      
+      system 'touch uninstall_open-pdks.sh'
+      system 'echo "#!/usr/bin/env bash" >> uninstall_open-pdks.sh'
+      system "echo 'rm -rf #{prefix}/share' >> uninstall_open-pdks.sh"
 
       bin.install "install_open-pdks.sh" => "install_open-pdks"
+      bin.install "uninstall_open-pdks.sh" => "uninstall_open-pdks"
       bin.install "open-pdks_installer.py" => "open-pdks_installer.py"
 
       ohai "Run the following command to install the pdk: 'sudo install_open-pdks'"
+      ohai "Before running 'brew remove' also run: 'sudo uninstall_open-pdks'"
     }
   end
 end
