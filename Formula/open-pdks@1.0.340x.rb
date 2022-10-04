@@ -4,9 +4,10 @@ class OpenPdksAT10340x < Formula
   homepage "http://opencircuitdesign.com/qrouter/"
   # url "https://github.com/IOmotade/homebrew-ocdtap/raw/master/Patches/open-pdks%401.0.340/make-error-patch.tar.gz"
   # url "https://github.com/IOmotade/homebrew-ocdtap/blob/master/Patches/open-pdks@1.0.340/make-error-patch.tar.gz?raw=true"
+  # url "https://github.com/IOmotade/homebrew-ocdtap/raw/master/Patches/open-pdks%401.0.340/make-error-patch.tar.gz"
   url "https://github.com/IOmotade/homebrew-ocdtap/raw/master/Patches/open-pdks%401.0.340/make-error-patch.tar.gz"
   # sha256 "816bb6ee32c672f5ebadb68b87a754a7d4e3f4cd438cbaa94a10c84837ef2ee2"
-  sha256 "2ff6f82cb1b279e89871648d75c1ab638a694a880aa18bd788f609f03e04d743"
+  sha256 "918ad87c52cba2842d714734b3980dfe02acc1825ddca153bd2328a29ef9c236"
 
   livecheck do
     url :stable

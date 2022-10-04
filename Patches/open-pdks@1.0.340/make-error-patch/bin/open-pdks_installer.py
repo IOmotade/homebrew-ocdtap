@@ -219,7 +219,7 @@ else:
     # and '$(CONDA_ENV_PYTHON): $(ENVIRONMENT_FILE) $(REQUIREMENTS_FILE) | $(CONDA_PYTHON) $(CONDA_SETUP_PATCH) $(CONDA_PKGS_DEP) \
     # $(CONDA_ENVS_DIR) $(CONDA_PYVENV)' into sources/skywater-pdk/third_party/make-env/conda.mk at line 144
     ifile.write(f"sed -i '' -e '30s,.*,\twget https://github.com/IOmotade/homebrew-ocdtap/raw/master/Patches/open-pdks%401.0.340/condarc-yaml-error-patch.py,g' Makefile\n")
-    ifile.write(f"sed -i '' -e '31s,.*,\tpython3 condarc-yaml-error-patch.py {BUILD_DIR},g' Makefile\n")
+    ifile.write(f"sed -i '' -e '31s,.*,\tpython3 condarc-yaml-error-patch.py {OPEN_PDKS_DIR},g' Makefile\n")
     ifile.write(f"sed -i '' -e '32s,.*,-include $(TOP_DIR)/third_party/make-env/conda.mk,g' Makefile\n")
     
     ifile.write("git config http.postbuffer 524288000\n")
