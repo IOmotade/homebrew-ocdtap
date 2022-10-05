@@ -294,7 +294,6 @@ else:
     ifile.write(f"echo 'Done installing at {PDK_DIR}!'\n")
     ifile.write(f"echo 'You should probably add {PDK_DIR} to your path by appending the following: \"export PDK_ROOT={PDK_DIR}\" to your .bash_profile or equivalent'\n")
     ifile.write(f"echo 'You can uninstall by running \"sudo uninstall_open-pdks\" before running \"brew remove\"'\n")
-    print("Done!")
 
   # with open(UNINSTALLER_FILE, 'w') as unfile:
   #   unfile.write(f"rm -rf {TMP_DIR}")
