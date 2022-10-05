@@ -6,7 +6,9 @@ VERSION_NO = sys.argv[2]
 TMP_DIR = f"{PREFIX}/tmp"
 BUILD_DIR = f"{TMP_DIR}"
 SHARE_DIR = f"{PREFIX}/share"
+TMP_SHARE_DIR = f"{PREFIX}/tmp"
 PDK_DIR = f"{PREFIX}/share/pdk"
+SCRIPTS_DIR = f"{SHARE_DIR}/scripts"
 OPEN_PDKS_DIR = f"{TMP_DIR}/open_pdks"
 SOURCES_PDK_DIR = f"{OPEN_PDKS_DIR}/sources"
 SKYWATER_PDK_DIR = f"{SOURCES_PDK_DIR}/skywater-pdk"
@@ -16,23 +18,36 @@ UNINSTALLER_FILE = f"{PREFIX}/bin/uninstall_open-pdks.sh"
 
 DESCRIPTION = f"This application installs Open-PDKs version {VERSION_NO}"
 
-# SKY130_HELP = f"Enable/disable installation of Google/SkyWater 130um PDK ()"
-# SKY130_IS_ENABLED = "SKY130_IS_ENABLED"
-# parser.add_argument('--enable-sky130', help=SKY130_HELP, dest=SKY130_IS_ENABLED, action='store_true', default=True)
-# parser.add_argument('--disable-sky130', help=SKY130_HELP, dest=SKY130_IS_ENABLED, action='store_false', default=True)
-
-
-# GF180_HELP = f"Enable/disable installation of Google/GlobalFoundries 180uM PDK ()"
-# GF180_IS_ENABLED = "GF180_IS_ENABLED"
-# parser.add_argument('--enable-gf180', help=GF180_HELP, dest=GF180_IS_ENABLED, action='store_true', default=True)
-# parser.add_argument('--disable-gf180', help=GF180_HELP, dest=GF180_IS_ENABLED, action='store_false', default=True)
-
-
-ARGS = sys.argv[3:]
+INPUT_ARGS = sys.argv[3:]
+DEFAULT_ARGS = [
+  '--enable-gf180mcu-pdk',
+  '--enable-klayout',
+  '--enable-magic',
+  '--enable-netgen',
+  '--enable-irsim',
+  '--enable-openlane',
+  '--enable-qflow',
+  '--enable-xschem',
+  '--enable-xschem-sky130',
+  '--enable-klayout-sky130',
+  '--enable-precheck-sky130',
+  '--enable-osu-t12-sky130',
+  '--enable-osu-t15-sky130',
+  '--enable-osu-t18-sky130',
+  '--with-sky130-variants=all',
+  '--enable-primitive-gf180mcu',
+  '--enable-io-gf180mcu',
+  '--enable-sc-7t5v0-gf180mcu',
+  '--enable-sc-9t5v0-gf180mcu',
+  '--enable-sram-gf180mcu',
+  '--enable-osu-sc-gf180mcu',
+  '--with-gf180mcu-variants=all',
+  '--disable-sram-sky130'
+]
 
 print(f"Temporary directory is: {TMP_DIR}")
 
-if (('-h' in ARGS) or ('--help' in ARGS)):
+if (('-h' in INPUT_ARGS) or ('--help' in INPUT_ARGS)):
   print(
   f"""
   'configure' configures open_pdks {VERSION_NO} to adapt to many kinds of systems.
@@ -189,14 +204,12 @@ Report bugs to <github.com/RTimothyEdwards/open_pdks>.
 )
   with open(INSTALLER_FILE, 'w') as ifile:
     ifile.write("#!/usr/bin/env bash\n")
-    ifile.write("")
+    ifile.write("\n")
 else:
+  f = lambda x: x.split('=')[0].replace('disable', 'enable') # Generate string for comparison from arguments
   with open(INSTALLER_FILE, 'w') as ifile:
     ifile.write("CURRENT_DIR=${PWD}\n")
     ifile.write(f"\n")
-    
-    # Make final directories
-    # ifile.write(f"mkdir {TMP_DIR}\n")
 
     # Create and clone Open_PDK repo
     ifile.write(f"#Clone Open PDK v{VERSION_NO} repository\n")
@@ -205,6 +218,9 @@ else:
     ifile.write("git clone --depth 1 --branch 1.0.340 git://opencircuitdesign.com/open_pdks\n")
     ifile.write(f"\n")
     
+    SKYWATER_PDK_ARG = f'--enable-sky130-pdk={SKYWATER_PDK_DIR}'
+    if (arg:=f(SKYWATER_PDK_ARG)) in (args:=[f(arg) for arg in INPUT_ARGS]):
+      SKYWATER_PDK_ARG = INPUT_ARGS[args.index(arg)]
     # Clone Skywater DPK repo & make timing
     ifile.write(f"cd {OPEN_PDKS_DIR}\n")
     ifile.write("#Clone Skywater PDK repository\n")
@@ -223,26 +239,39 @@ else:
     ifile.write(f"sed -i '' -e '32s,.*,-include $(TOP_DIR)/third_party/make-env/conda.mk,g' Makefile\n")
     
     ifile.write("git config http.postbuffer 524288000\n")
-    # ifile.write("git submodule update --init libraries/sky130_fd_io/latest\n")
-    # ifile.write("git submodule update --init libraries/sky130_fd_pr/latest\n")
-    # ifile.write("git submodule update --init libraries/sky130_fd_sc_hd/latest\n")
-    # ifile.write("git submodule update --init libraries/sky130_fd_sc_hvl/latest\n")
+    ifile.write("git submodule update --init libraries/sky130_fd_io/latest\n")
+    ifile.write("git submodule update --init libraries/sky130_fd_pr/latest\n")
+    ifile.write("git submodule update --init libraries/sky130_fd_sc_hd/latest\n")
+    ifile.write("git submodule update --init libraries/sky130_fd_sc_hvl/latest\n")
     
-    # ifile.write("git submodule update --init libraries/sky130_fd_pr_reram/latest\n")
-    # ifile.write("git submodule update --init libraries/sky130_fd_sc_hdll/latest\n")
-    # ifile.write("git submodule update --init libraries/sky130_fd_sc_hs/latest\n")
-    # ifile.write("git submodule update --init libraries/sky130_fd_sc_ms/latest\n")
-    # ifile.write("git submodule update --init libraries/sky130_fd_sc_ls/latest\n")
-    # ifile.write("git submodule update --init libraries/sky130_fd_sc_lp/latest\n")
-    ifile.write("SUBMODULE_VERSION=latest make submodules -j3 || make submodules -j1\n")
+    ifile.write("git submodule update --init libraries/sky130_fd_pr_reram/latest\n")
+    ifile.write("git submodule update --init libraries/sky130_fd_sc_hdll/latest\n")
+    ifile.write("git submodule update --init libraries/sky130_fd_sc_hs/latest\n")
+    ifile.write("git submodule update --init libraries/sky130_fd_sc_ms/latest\n")
+    ifile.write("git submodule update --init libraries/sky130_fd_sc_ls/latest\n")
+    ifile.write("git submodule update --init libraries/sky130_fd_sc_lp/latest\n")
+
+    # ifile.write("SUBMODULE_VERSION=latest make submodules -j3 || make submodules -j1\n")
     ifile.write("make timing\n")
     ifile.write(f"\n")
     
     # Make Open PDK
     ifile.write(f"cd {OPEN_PDKS_DIR}\n")
-    
-    args = ''.join([f'{arg} ' for arg in ARGS])
-    ifile.write(f"./configure --prefix={PREFIX} --enable-sky130-pdk={SKYWATER_PDK_DIR} {args}\n")
+    ifile.write(f"mkdir {TMP_SHARE_DIR}\n")
+
+    # Make remaining directories
+    ifile.write(f"mkdir {SCRIPTS_DIR}\n")
+
+    if (('--defaults') in INPUT_ARGS):
+      INPUT_ARGS.remove('--defaults')
+      i_str_list = [f(arg) for arg in INPUT_ARGS]
+      for default_arg in DEFAULT_ARGS:
+        d_str = f(default_arg)
+        if not (d_str in i_str_list):
+          INPUT_ARGS.append(default_arg)
+
+    args = ''.join([f'{arg} ' for arg in INPUT_ARGS])
+    ifile.write(f"./configure --prefix={PREFIX} {SKYWATER_PDK_ARG} {args}\n")
     ifile.write(f"sed -i '' -e 's,prefix = .*,prefix = {TMP_DIR},g' Makefile\n")
     ifile.write("sed -i '' -e '77s,SED = .*,SED = /opt/homebrew/bin/gsed,g' gf180mcu/Makefile\n")
     ifile.write("sed -i '' -e '150s,SED = .*,SED = /opt/homebrew/bin/gsed,g' sky130/Makefile\n")
@@ -256,7 +285,10 @@ else:
     ifile.write(f"\n")
     
     ifile.write("cd $CURRENT_DIR\n")
-    ifile.write("Done!\n")
+    ifile.write(f"echo 'Done installing at {PDK_DIR}!'\n")
+    ifile.write(f"echo 'You should probably add {PDK_DIR} to your path by appending the following: \"export PDK_ROOT={PDK_DIR}\" to your .bash_profile or equivalent'\n")
+    ifile.write(f"echo 'You can uninstall by running \"sudo uninstall_open-pdks\" before running \"brew remove\"'\n")
+    print("Done!")
 
   # with open(UNINSTALLER_FILE, 'w') as unfile:
   #   unfile.write(f"rm -rf {TMP_DIR}")
