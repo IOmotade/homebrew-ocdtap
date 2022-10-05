@@ -44,8 +44,10 @@ DEFAULT_ARGS = [
   '--with-gf180mcu-variants=all',
   '--disable-sram-sky130'
 ]
+SKYWATER_PDK_ARG = f'--enable-sky130-pdk={SKYWATER_PDK_DIR}'
 
 if (('-h' in INPUT_ARGS) or ('--help' in INPUT_ARGS)):
+  DEFAULT_ARGS_HELP_TEXT = ''.join([f'    {arg}\n' for arg in DEFAULT_ARGS])
   print(
   f"""{DESCRIPTION}
 
@@ -61,6 +63,10 @@ To assign environment variables (e.g., CC, CFLAGS...), specify them as
 VAR=VALUE.  See below for descriptions of some of the useful variables.
 
 Defaults for the options are specified in brackets.
+
+  --defaults              install Open PDKs with following default arguments (unless otherwise commanded):
+    {SKYWATER_PDK_ARG.split('=')[0]}
+{DEFAULT_ARGS_HELP_TEXT}
 
 Configuration:
   -h, --help              display this help and exit
@@ -224,7 +230,6 @@ else:
     ifile.write("git clone --depth 1 --branch 1.0.340 git://opencircuitdesign.com/open_pdks\n")
     ifile.write(f"\n")
     
-    SKYWATER_PDK_ARG = f'--enable-sky130-pdk={SKYWATER_PDK_DIR}'
     if (arg:=f(SKYWATER_PDK_ARG)) in (args:=[f(arg) for arg in INPUT_ARGS]):
       SKYWATER_PDK_ARG = INPUT_ARGS[args.index(arg)]
     # Clone Skywater DPK repo & make timing
