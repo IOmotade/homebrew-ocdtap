@@ -3,7 +3,7 @@ class OpenPdksAT10340x < Formula
   desc "Open PDKs v1.0.340"
   homepage "http://opencircuitdesign.com/open_pdks/"
   url "https://github.com/IOmotade/homebrew-ocdtap/raw/master/Patches/open-pdks%401.0.340/make-error-patch.tar.gz"
-  sha256 "2a24a902a67cedc144e56c78245e4180e13a9f623f3af6981a9fb62f809d953c"
+  sha256 "91810f0c09d710638542f192bb9eb6d4ad3eee4c174c2c100eda044db6d5c303"
 
   livecheck do
     url :stable
