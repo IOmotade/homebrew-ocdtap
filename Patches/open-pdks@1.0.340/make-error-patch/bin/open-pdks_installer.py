@@ -45,14 +45,17 @@ DEFAULT_ARGS = [
   '--disable-sram-sky130'
 ]
 
-print(f"Temporary directory is: {TMP_DIR}")
-
 if (('-h' in INPUT_ARGS) or ('--help' in INPUT_ARGS)):
   print(
-  f"""
-  'configure' configures open_pdks {VERSION_NO} to adapt to many kinds of systems.
+  f"""{DESCRIPTION}
 
-Usage: ./configure [OPTION]... [VAR=VALUE]...
+  It also configures open_pdks {VERSION_NO} to adapt to many kinds of systems.
+
+  It basically mirrors open_pdks './configure' script
+
+  Please note that help text might lag actual open_pdks version ./configure script
+
+Usage: ./install_open-pdks [OPTION]... [VAR=VALUE]...
 
 To assign environment variables (e.g., CC, CFLAGS...), specify them as
 VAR=VALUE.  See below for descriptions of some of the useful variables.
@@ -206,7 +209,10 @@ Report bugs to <github.com/RTimothyEdwards/open_pdks>.
     ifile.write("#!/usr/bin/env bash\n")
     ifile.write("\n")
 else:
+  print(f"Temporary directory is: {TMP_DIR}")
+
   f = lambda x: x.split('=')[0].replace('disable', 'enable') # Generate string for comparison from arguments
+
   with open(INSTALLER_FILE, 'w') as ifile:
     ifile.write("CURRENT_DIR=${PWD}\n")
     ifile.write(f"\n")
