@@ -227,7 +227,7 @@ else:
     ifile.write(f"#Clone Open PDK v{VERSION_NO} repository\n")
     ifile.write(f"mkdir {TMP_DIR}\n")
     ifile.write(f"cd {TMP_DIR}\n")
-    ifile.write("git clone --depth 1 --branch 1.0.340 git://opencircuitdesign.com/open_pdks\n")
+    ifile.write("git clone --branch 1.0.340 git://opencircuitdesign.com/open_pdks\n")
     ifile.write(f"\n")
     
     if (arg:=f(SKYWATER_PDK_ARG)) in (args:=[f(arg) for arg in INPUT_ARGS]):
